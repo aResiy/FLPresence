@@ -13,7 +13,7 @@ param(
 $ErrorActionPreference = 'Stop'
 
 $repo = Split-Path $PSScriptRoot -Parent
-$version = "1.3.0"
+$version = "1.3.1"
 $installDir = $InstallDir
 if (-not $installDir) {
     $installDir = Join-Path $env:LOCALAPPDATA 'Programs\FLPresence'

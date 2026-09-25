@@ -177,7 +177,7 @@ public sealed class TrayAppContext : ApplicationContext
 
         var about = new ToolStripMenuItem("About");
         about.Click += (_, _) => MessageBox.Show(
-            "FLPresence 1.3.0\n\nDiscord Rich Presence for FL Studio.\n" +
+            "FLPresence 1.3.1\n\nDiscord Rich Presence for FL Studio.\n" +
             $"Bridge: UDP 127.0.0.1:{BridgeProtocol.DefaultPort} (localhost only)\n" +
             "Official FL Studio MIDI Scripting API — no memory reading.\n" +
             "Works without any MIDI keyboard (native window tracking); " +

@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.3.1
+- One-exe install falls back to `<drive>:\Programs\FLPresence` when the system drive is nearly full.
+
 ## 1.3.0
 - Presence is shown the whole time FL Studio is open (no longer hidden when FL loses focus).
 - BPM without MIDI: read from the saved .flp (FL command line / recent files), re-read on save.

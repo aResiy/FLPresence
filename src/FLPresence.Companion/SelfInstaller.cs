@@ -14,8 +14,18 @@ internal static class SelfInstaller
     private const string UninstallKey = @"Software\Microsoft\Windows\CurrentVersion\Uninstall\FLPresence";
     private const string RunKey = @"Software\Microsoft\Windows\CurrentVersion\Run";
 
-    public static string InstallDir => Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Programs", "FLPresence");
+    public static string InstallDir
+    {
+        get
+        {
+            var local = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Programs", "FLPresence");
+            // Full system drive: fall back to "<drive of the downloaded exe>:\Programs\FLPresence".
+            try { if (new DriveInfo(Path.GetPathRoot(local)!).AvailableFreeSpace > 300L << 20) return local; }
+            catch { return local; }
+            return Path.Combine(Path.GetPathRoot(Environment.ProcessPath!)!, "Programs", "FLPresence");
+        }
+    }
 
     private static string InstalledExe => Path.Combine(InstallDir, "FLPresence.exe");
 
@@ -23,6 +33,7 @@ internal static class SelfInstaller
     public static bool InstallIfNeeded()
     {
         var self = Environment.ProcessPath!;
+        if (File.Exists(Path.Combine(Path.GetDirectoryName(self)!, "uninstall.ps1"))) return false; // install.ps1 layout
         // Running from the install dir, or from any dir that already holds an
         // install (e.g. install.ps1 -InstallDir, dev build) — nothing to do.
         if (string.Equals(Path.GetDirectoryName(self), InstallDir, StringComparison.OrdinalIgnoreCase)
@@ -85,7 +96,7 @@ internal static class SelfInstaller
         catch { }
         // The running exe can't delete itself: let cmd do it after we exit.
         Process.Start(new ProcessStartInfo("cmd.exe",
-            $"/c timeout /t 2 /nobreak >nul & rmdir /s /q \"{InstallDir}\"")
+            $"/c timeout /t 2 /nobreak >nul & rmdir /s /q \"{Path.GetDirectoryName(Environment.ProcessPath)}\"")
         { CreateNoWindow = true, UseShellExecute = false });
         MessageBox.Show("FLPresence was removed.\nSettings and logs were kept in %APPDATA% / %LOCALAPPDATA%\\FLPresence.",
             "FLPresence", MessageBoxButtons.OK, MessageBoxIcon.Information);
