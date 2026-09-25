@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>FLPresence</AssemblyName>
+    <RootNamespace>FLPresence.Companion</RootNamespace>
+    <Version>1.3.0</Version>
+    <ApplicationIcon>..\..\assets\flpresence.ico</ApplicationIcon>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    <InvariantGlobalization>true</InvariantGlobalization>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\..\flstudio\FLPresence\device_FLPresence.py"
+                      Link="bridge\device_FLPresence.py"
+                      LogicalName="FLPresence.bridge_script.py" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FLPresence.Core\FLPresence.Core.csproj" />
+    <ProjectReference Include="..\FLPresence.Discord\FLPresence.Discord.csproj" />
+    <ProjectReference Include="..\FLPresence.IPC\FLPresence.IPC.csproj" />
+  </ItemGroup>
+
+</Project>

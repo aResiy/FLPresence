@@ -1,0 +1,10 @@
+bin/
+obj/
+dist/
+*.user
+.vs/
+.nuget-packages/
+.claude-flow/
+installer/third_party/
+PHASE2_RESUME.md
+tests/FLPresence.Tests/TmpLive.cs

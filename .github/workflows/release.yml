@@ -1,0 +1,23 @@
+# Push a tag like v1.2.1 -> GitHub Release with a ready-to-run FLPresence.exe
+name: release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with: { dotnet-version: '8.0.x' }
+      - run: dotnet test tests/FLPresence.Tests -c Release
+      - run: >
+          dotnet publish src/FLPresence.Companion/FLPresence.Companion.csproj -c Release -r win-x64
+          --self-contained true -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true -o out
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: out/FLPresence.exe
+          generate_release_notes: true
